@@ -1,6 +1,9 @@
 import express from 'express';
 import { nanoid } from 'nanoid';
+import dotenv from 'dotenv';
+import connectDB from './src/config/mongo.config.js';
 
+dotenv.config("./.env");
 const app = express();
 const PORT = 3000;
 
@@ -14,6 +17,7 @@ app.post('/api/create', (req, res) => {
 
 
 app.listen(PORT, () => {
+    connectDB();
     console.log(`Server is runing on port: ${PORT}`);
-    
 }) 
+
