@@ -2,7 +2,7 @@ import express from 'express';
 import { nanoid } from 'nanoid';
 import dotenv from 'dotenv';
 import connectDB from './src/config/mongo.config.js';
-import urlSchema from './src/config/models/shorturl.model.js';
+import urlSchema from './src/models/shorturl.model.js';
 
 dotenv.config("./.env");
 const app = express();
