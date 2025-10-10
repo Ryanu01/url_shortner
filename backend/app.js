@@ -9,6 +9,7 @@ import { errorHandler } from './src/utils/errorHandler.js';
 import cors from "cors";
 dotenv.config("./.env");
 const app = express();
+import authRoutes from "./src/routes/auth.routes.js";
 const PORT = 3000;
 
 
@@ -16,9 +17,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+
+app.use('/api/auth', authRoutes);
 app.use('/api/create', short_url);
-
-
 app.use('/:shortUrl', redirectFromShortUrl);
 
 app.use(errorHandler);
