@@ -3,10 +3,20 @@ import axios from "axios";
 const UrlForm = () => {
     const [url, setUrl] = useState();
     const [shortUrl, setShortUrl] = useState();
+    const [copied, setCopied] = useState(false);
     const handleSubmit = async () => {
-        const data = await axios.post("http://localhost:3000/api/create", {url}) 
-        console.log(data);
+        const {data} = await axios.post("http://localhost:3000/api/create", {url}) 
+        setShortUrl(data);
     }
+
+    const handleCopy = () =>{
+        navigator.clipboard.writeText(shortUrl);
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
+    }
+
     return (
         <div className="space-y-4">
             <div>
@@ -31,7 +41,30 @@ const UrlForm = () => {
             >
                 Shorten Url
             </button>
-            
+            {shortUrl && (
+                <div className="mt-6">
+                    <h2 className="text-lg font-semibold mb-2">
+                        Your shortened URL
+                    </h2>
+                    <div className="flex items-center">
+                        <input 
+                        type="text"
+                        readOnly
+                        value={shortUrl}
+                        className="flex-1 p-2 border border-gray-300 rounded-l-md bg-gray-50"
+                        />
+                        <button
+                            onClick={handleCopy}
+                            className={`px-4 py-2 rounded-r-md transition-colors duration-200 ${
+                                copied ? "bg-green-500 text-white hover:bg-green-600"
+                                        : "bg-gray-200 hover:bg-gray-300"
+                            }`}
+                        >
+                            {copied ? 'Copied!': 'Copy'}
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
