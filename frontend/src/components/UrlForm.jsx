@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { createShortUrl } from "../api/shortUrl.api";
 const UrlForm = () => {
-    const [url, setUrl] = useState();
+    const [url, setUrl] = useState("");
     const [shortUrl, setShortUrl] = useState();
     const [copied, setCopied] = useState(false);
+
     const handleSubmit = async () => {
-        const {data} = await axios.post("http://localhost:3000/api/create", {url}) 
-        setShortUrl(data);
+        const shortUrl = await createShortUrl(url);
+        setShortUrl(shortUrl);
     }
 
     const handleCopy = () =>{
@@ -17,6 +19,12 @@ const UrlForm = () => {
         }, 2000);
     }
 
+    const handleKeydown = (e) => {
+        if(e.key === 'Enter') {
+            handleSubmit();
+        }
+    };
+    
     return (
         <div className="space-y-4">
             <div>
@@ -28,7 +36,8 @@ const UrlForm = () => {
             id="url"
             value={url}
             onInput={(e) => setUrl(e.target.value)}
-            placeholder="https://www.example.com"
+            onKeyDown={handleKeydown}
+            placeholder="https://example.com"
             required
             className="w-full px-4 py-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
