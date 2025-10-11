@@ -13,9 +13,10 @@ const LoginForm = ({ state }) => {
         setError('');
 
         try {
-            const data = await loginUser(password, email);
+            await loginUser(password, email);
             setLoading(false);
-
+            console.log("Loging in");
+            
         } catch (error) {
             setLoading(false);
             setError(error.message || 'Login failed. Please check you email or password')
