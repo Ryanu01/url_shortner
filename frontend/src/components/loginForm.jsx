@@ -16,12 +16,15 @@ const LoginForm = ({ state }) => {
             const data = await loginUser(password, email);
             setLoading(false);
 
-            if (onLoading) {
-                onLoginSuccess(data);
-            }
         } catch (error) {
             setLoading(false);
             setError(error.message || 'Login failed. Please check you email or password')
+        }
+    };
+
+    const handleKeydown = (e) => {
+        if(e.key === 'Enter') {
+            handleSubmit();
         }
     };
 
@@ -46,6 +49,7 @@ const LoginForm = ({ state }) => {
                         type="email"
                         placeholder="email"
                         value={email}
+                        onKeyDown={handleKeydown}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />

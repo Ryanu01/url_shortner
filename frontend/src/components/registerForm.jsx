@@ -25,6 +25,12 @@ const registerForm = ({ state }) => {
             setError(error.message || 'Registration failed. Please try agian');
         }
     };
+
+    const handleKeydown = (e) => {
+        if(e.key === 'Enter') {
+            handleSubmit();
+        }
+    };
     return (
         <div className="w-full max-w-md mx-auto">
             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -44,6 +50,7 @@ const registerForm = ({ state }) => {
                         type="text"
                         placeholder="Full name"
                         value={name}
+                        onKeyDown={handleKeydown}
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
@@ -59,6 +66,7 @@ const registerForm = ({ state }) => {
                         type="text"
                         placeholder="Email"
                         value={email}
+                        onKeyDown={handleKeydown}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
@@ -74,6 +82,7 @@ const registerForm = ({ state }) => {
                         type="password"
                         placeholder="******************"
                         value={password}
+                        onKeyDown={handleKeydown}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         minLength={6}
