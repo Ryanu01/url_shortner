@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { createShortUrl } from "../api/shortUrl.api";
+import { useSelector } from "react-redux";
 const UrlForm = () => {
     const [url, setUrl] = useState("");
     const [shortUrl, setShortUrl] = useState();
     const [copied, setCopied] = useState(false);
-
+    const [customSlug, setCustomSlug] = useState("");
+    const {isAuthenticated} = useSelector((state) => state.auth);
     const handleSubmit = async () => {
         const shortUrl = await createShortUrl(url);
         setShortUrl(shortUrl);
@@ -50,6 +52,21 @@ const UrlForm = () => {
             >
                 Shorten Url
             </button>
+            {isAuthenticated && (
+                <div className="mt-4">
+                    <label htmlFor="customSlug" className="block text-sm font-medium text-gray-700 mb-1">
+                    Custom URL (optional)
+                    </label>
+                    <input 
+                        type="text"
+                        id="customSlug"
+                        value={customSlug}
+                        onChange={(e) => setCustomSlug(e.target.value)}
+                        placeholder="Enter custom slug"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+            )}
             {shortUrl && (
                 <div className="mt-6">
                     <h2 className="text-lg font-semibold mb-2">
