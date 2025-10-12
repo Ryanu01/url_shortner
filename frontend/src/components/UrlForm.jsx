@@ -2,15 +2,23 @@ import React, { useState } from "react";
 import axios from "axios";
 import { createShortUrl } from "../api/shortUrl.api";
 import { useSelector } from "react-redux";
+import {queryClient} from "../main"
 const UrlForm = () => {
     const [url, setUrl] = useState("");
     const [shortUrl, setShortUrl] = useState();
+    const [error, setError] = useState(null)
     const [copied, setCopied] = useState(false);
     const [customSlug, setCustomSlug] = useState("");
     const {isAuthenticated} = useSelector((state) => state.auth);
     const handleSubmit = async () => {
-        const shortUrl = await createShortUrl(url);
-        setShortUrl(shortUrl);
+        try {
+            const shortUrl = await createShortUrl(url, customSlug);
+            setShortUrl(shortUrl);
+            queryClient.invalidateQueries({queryKey: ['userUrls']})
+            setError(null);
+        } catch (error) {
+            setError(error.message);
+        }
     }
 
     const handleCopy = () =>{
