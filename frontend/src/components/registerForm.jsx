@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { registerUser } from "../api/user.api.js";
-
+import { useNavigate } from "@tanstack/react-router";
+import { useDispatch } from "react-redux";
 const registerForm = ({ state }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         if (password.length < 6) {
             setError('Password must be at least 6 characters long');
@@ -20,6 +22,8 @@ const registerForm = ({ state }) => {
         try {
             const data = await registerUser(name, password, email);
             setLoading(false);
+            dispatchEvent(login(data.user))
+            navigate({to:"/dashboard"})
         } catch (error) {
             setLoading(false);
             setError(error.message || 'Registration failed. Please try agian');
@@ -80,7 +84,7 @@ const registerForm = ({ state }) => {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="password"
                         type="password"
-                        placeholder="******************"
+                        placeholder="**********"
                         value={password}
                         onKeyDown={handleKeydown}
                         onChange={(e) => setPassword(e.target.value)}
